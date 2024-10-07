@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verificación de Usuario con jQuery y PHP</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#loginForm').submit(function(e) {
+                e.preventDefault(); // Evitar el comportamiento normal del formulario
+
+                var usuario = $('#usuario').val();
+                var clave = $('#clave').val();
+
+                // Realizar la solicitud AJAX
+                $.ajax({
+                    url: 'validar_usuarios.php',
+                    type: 'POST',
+                    data: {
+                        usuario: usuario,
+                        clave: clave
+                    },
+                    success: function(response) {
+                        // Mostrar el resultado del servidor
+                        if(response==0){
+                            $('#resultado').text("Datos incorrectos");
+                        }
+                        if(response==1){
+                            window.location.href = 'principal.html';
+                        }
+                    },
+                    error: function() {
+                        $('#resultado').text('Ocurrió un error al procesar la solicitud.');
+                    }
+                });
+            });
+        });
+    </script>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+
+    h1 {
+        color: #333;
+        margin-bottom: 20px; /* Espacio debajo del título */
+        text-align: center;
+    }
+
+    #loginForm {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        width: 300px;
+    }
+
+    label {
+        font-weight: bold;
+        display: block;
+        margin-bottom: 5px;
+        color: #333;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+    button {
+        width: 100%;
+        background-color: #28a745;
+        color: white;
+        padding: 10px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+    button:hover {
+        background-color: #218838;
+    }
+
+    #resultado {
+        margin-top: 15px;
+        color: red;
+        font-weight: bold;
+        text-align: center;
+    }
+</style>
+
+</head>
+<body>
+    <h1>Iniciar Sesión</h1>
+    
+    <form id="loginForm">
+        <label for="usuario">Usuario:</label>
+        <input type="text" id="usuario" name="usuario" required><br><br>
+
+        <label for="clave">Clave:</label>
+        <input type="password" id="clave" name="clave" required><br><br>
+
+        <button type="submit">Enviar</button>
+    </form>
+
+    <div id="resultado"></div> <!-- Aquí se mostrará el mensaje de éxito o error -->
+
+
+</body>
+</html>
